@@ -36,6 +36,17 @@ app.get('/projects', (req, res) => {
         })
 });
 
+app.get('/projects/:id', (req, res) => {
+    const { id } = req.params
+    projectModel.getProjectActions(id)
+        .then(response =>{
+            res.status(200).json(response);
+        })
+        .catch( err => {
+            res.status(500).json({ error : 'there was error fetching projects Actions '});
+        })
+});
+
 app.post('/projects', (req, res) => {
     const { name , description } = req.body
     const project = { name , description }
