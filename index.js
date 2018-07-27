@@ -97,6 +97,72 @@ app.delete('/projects/:id', (req, res) => {
 
 });
 
+// CRUD API for Actions Model
+
+app.get('/actions', (req, res) => {
+     actionModel.get()
+        .then(response =>{
+            res.status(200).json(response);
+        })
+        .catch( err => {
+            res.status(500).json({ error : 'there was error fetching projects actions'});
+        })
+});
+
+app.get('/actions/:id', (req, res) => {
+    const { id } = req.params
+    actionModel.get(id)
+        .then(response =>{
+            res.status(200).json(response);
+        })
+        .catch( err => {
+            res.status(500).json({ error : 'there was error fetching projects Actions '});
+        })
+});
+
+app.post('/actions', (req, res) => {
+    const { project_id , description } = req.body
+    const projectActions = { ...req.body }
+
+    if(!project_id || !description ){
+        res.status(400).json({error : 'Please Provide Project name and Description'})
+    }
+    else{
+        actionModel.insert(projectActions)
+            .then(response => {
+                res.status(200).json(response)
+            })
+            .catch(err => {
+                res.status(500).json({ error : 'Sorry Something went Wrong and Project not Created'});
+            })
+    }
+
+});
+
+app.put('/actions/:id', (req, res) => {
+ const { id } = req.params
+ const changes = { ...req.body }
+        actionModel.update(id,changes)
+            .then(response => {
+                res.status(201).json(response)
+            })
+            .catch(err => {
+                res.status(500).json({error :"Sorry Error while updating project actions"})
+            })
+});
+
+app.delete('/actions/:id', (req, res) => {
+    const { id } = req.params
+    actionModel.remove(id)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch( err =>{
+            res.status(500).json({error : "Sorry Project actions could not be deleted"})
+        })
+
+});
+
 
 app.listen(6000, () => {
     console.log('Example app listening on port 6000!');
