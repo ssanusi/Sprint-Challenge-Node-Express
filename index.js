@@ -38,7 +38,7 @@ app.get('/projects', (req, res) => {
 
 app.get('/projects/:id', (req, res) => {
     const { id } = req.params
-    projectModel.getProjectActions(id)
+    projectModel.get(id)
         .then(response =>{
             res.status(200).json(response);
         })
@@ -160,6 +160,13 @@ app.delete('/actions/:id', (req, res) => {
         .catch( err =>{
             res.status(500).json({error : "Sorry Project actions could not be deleted"})
         })
+
+});
+
+app.get('/actions', (req, res) => {
+    const projectActions = req.query.project || "project_id"
+
+    console.log(projectActions)
 
 });
 
